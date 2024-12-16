@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Profile;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
@@ -32,6 +33,9 @@ class RegistrationController extends AbstractController
 
         // encode the plain password
         $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+
+        $user->setProfile(new Profile());
+        $user->getProfile()->setDisplayName($user->getUsername());
 
         $entityManager->persist($user);
         $entityManager->flush();
