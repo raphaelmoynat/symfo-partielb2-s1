@@ -18,7 +18,7 @@ class Profile
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(["events:read", 'profiles:read'])]
+    #[Groups(['profiles:read', 'events:read', 'events:read:public'])]
     private ?string $displayName = null;
 
     #[ORM\OneToOne(inversedBy: 'profile', cascade: ['persist', 'remove'])]

@@ -35,10 +35,12 @@ class InvitationController extends AbstractController
             return $this->json(['error' => 'Invitations are only for private events'], 403);
         }
 
+        if ($event->getStatus() === 'canceled') {
+            return $this->json(['error' => 'Event is canceled. No invitations can be sent.'], 400);
+        }
+
         $data = json_decode($request->getContent(), true);
         $receiverId = $data['receiverId'] ?? null;
-
-
 
         $receiver = $userRepository->find($receiverId)->getProfile();
 
@@ -61,14 +63,24 @@ class InvitationController extends AbstractController
         }
 
         $invitation = new Invitation();
+
         $invitation->setStatus("pending");
         $invitation->setEvent($event);
         $invitation->setReceiver($receiver);
 
+
+        $event = $invitation->getEvent();
+        $currentDate = new \DateTime('now');
+        $startDate = $event->getStartDate();
+
+        if ($currentDate >= $startDate) {
+            return $this->json(['error' => 'The event has already started, you cannot sent an invitation'], 400);
+        }
+
         $manager->persist($invitation);
         $manager->flush();
 
-        return $this->json(['message' => 'Invitation sent successfully'], 200);
+        return $this->json(['message' => 'Invitation sent successfully', 'event' => $event], 200, [], ['groups' => 'events:read']);
     }
 
     #[Route('/api/invitations', name: 'list_invitations', methods: ['GET'])]
@@ -102,6 +114,13 @@ class InvitationController extends AbstractController
             return $this->json(['error' => 'You are not authorized to accept this invitation'], 403);
         }
 
+        $event = $invitation->getEvent();
+        $currentDate = new \DateTime('now');
+        $startDate = $event->getStartDate();
+
+        if ($currentDate >= $startDate) {
+            return $this->json(['error' => 'The event has already started, you cannot modify this invitation'], 400);
+        }
 
 
         $route = $request->attributes->get('_route');
@@ -112,6 +131,9 @@ class InvitationController extends AbstractController
                 }
                 $invitation->setStatus("accepted");
                 $event = $invitation->getEvent();
+                if ($event->getStatus() === 'canceled') {
+                    return $this->json(['error' => 'The event is canceled. You cannot accept your invitation.'], 400);
+                }
                 $event->addParticipant($profile);
                 $manager->persist($event);
                 $manager->persist($invitation);
@@ -122,13 +144,23 @@ class InvitationController extends AbstractController
                     return $this->json(['error' => 'Invitation already denied'], 400);
                 }
                 $invitation->setStatus("denied");
+                $event = $invitation->getEvent();
+                if ($event->getStatus() === 'canceled') {
+                    return $this->json(['error' => 'The event is canceled. You cannot deny your invitation.'], 400);
+                }
+                if ($event->getParticipants()->contains($profile)) {
+                    $event->removeParticipant($profile);
+                    $manager->persist($event);
+                }
+
+                $manager->persist($invitation);
+                $manager->flush();
+
                 return $this->json(['message' => 'Invitation denied successfully'], 200);
         }
 
 
-
-
-
+        return $this->json(['error' => 'Invalid action'], 400);
 
     }
 

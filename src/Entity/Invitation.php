@@ -22,10 +22,11 @@ class Invitation
 
     #[ORM\ManyToOne(inversedBy: 'invitations')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('events:read')]
     private ?Profile $receiver = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('invitations:read')]
+    #[Groups('events:read')]
     private ?string $status = null;
 
 

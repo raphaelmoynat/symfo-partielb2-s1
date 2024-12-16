@@ -15,50 +15,57 @@ class Event
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['events:read','profiles:read', 'invitations:read'])]
+    #[Groups(['events:read','profiles:read', 'invitations:read', 'events:read:private', 'events:read:public'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['events:read','profiles:read', 'invitations:read'])]
+    #[Groups(['events:read','profiles:read', 'invitations:read', 'events:read:private', 'events:read:public'])]
     private ?string $place = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups("events:read")]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups("events:read")]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups("events:read")]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column]
-    #[Groups("events:read")]
+    #[Groups("events:read", 'events:read:public')]
     private ?bool $isPlacePublic = false;
 
     #[ORM\Column]
-    #[Groups("events:read")]
+    #[Groups("events:read", 'events:read:public')]
     private ?bool $isPublic = false;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups("events:read")]
+    #[Groups([ "events:read", 'events:read:public'])]
     private ?Profile $organizer = null;
 
     /**
      * @var Collection<int, Profile>
      */
     #[ORM\ManyToMany(targetEntity: Profile::class, inversedBy: 'eventParticipations')]
-    #[Groups("events:read")]
+    #[Groups(["events:read", 'events:read:public'])]
     private Collection $participants;
 
     /**
      * @var Collection<int, Invitation>
      */
     #[ORM\OneToMany(targetEntity: Invitation::class, mappedBy: 'event', orphanRemoval: true)]
+    #[Groups(["events:read"])]
     private Collection $invitations;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["events:read", 'events:read:public'])]
+    private ?string $status = 'on_schedule';
+
+
 
     public function __construct()
     {
@@ -208,4 +215,17 @@ class Event
 
         return $this;
     }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
 }
