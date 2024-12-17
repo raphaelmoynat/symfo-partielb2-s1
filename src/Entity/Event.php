@@ -23,23 +23,23 @@ class Event
     private ?string $place = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read', "profiles:read"])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read', "profiles:read"])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read', "profiles:read"])]
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column]
-    #[Groups(["events:read", 'events:read:public', 'invitations:read'])]
+    #[Groups(["events:read", 'events:read:public', 'invitations:read', "profiles:read"])]
     private ?bool $isPlacePublic = false;
 
     #[ORM\Column]
-    #[Groups(["events:read", 'events:read:public', 'invitations:read'])]
+    #[Groups(["events:read", 'events:read:public', 'invitations:read', "profiles:read"])]
     private ?bool $isPublic = false;
 
     #[ORM\ManyToOne(inversedBy: 'events')]

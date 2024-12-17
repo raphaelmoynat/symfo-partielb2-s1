@@ -28,7 +28,7 @@ class Profile
 
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'organizer', orphanRemoval: true)]
     #[Groups(['profiles:read'])]
-    private Collection $events;
+    public Collection $events;
 
     /**
      * @var Collection<int, Event>

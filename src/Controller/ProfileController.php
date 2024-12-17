@@ -14,6 +14,12 @@ class ProfileController extends AbstractController
     public function index(ProfileRepository $profileRepository): Response
     {
         $profiles = $profileRepository->findAll();
+
+        foreach ($profiles as $profile) {
+            $profile->events = $profile->getEvents()->filter(fn($event) => $event->isPublic());
+        }
+
         return $this->json($profiles, 200, [], ['groups' => 'profiles:read']);
     }
+
 }
