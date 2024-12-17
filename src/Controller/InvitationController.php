@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class InvitationController extends AbstractController
 {
-    #[Route('/api/event/invite/{id}', name: 'send_invitation', methods: ['POST'])]
+    #[Route('/api/event/private/invite/{id}', name: 'send_invitation', methods: ['POST'])]
     public function sendInvitation(int $id, Request $request, EventRepository $eventRepository, ProfileRepository $profileRepository, EntityManagerInterface $manager, Security $security, InvitationRepository $invitationRepository, UserRepository $userRepository): JsonResponse
     {
         $organizer = $security->getUser()->getProfile();

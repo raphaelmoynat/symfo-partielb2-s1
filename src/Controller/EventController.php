@@ -55,7 +55,7 @@ class EventController extends AbstractController
         $manager->persist($event);
         $manager->flush();
 
-        return $this->json(['message' => 'Event created successfully', 'event' => $event], 200, [], ['groups' => 'events:read']);
+        return $this->json(['message' => 'Event created successfully', 'event' => $event], 200, [], ['groups' => ['events:read']]);
     }
 
     #[Route('/api/event/public/join/{id}', name: 'join_event', methods: ['POST'])]
@@ -114,7 +114,7 @@ class EventController extends AbstractController
             }
         }
 
-        return $this->json($events, 200, [], ['groups' => 'events:read']);
+        return $this->json($events, 200, [], ['groups' => ['events:read']]);
     }
 
     #[Route('/api/event/private/participant', name: 'private_event_participant', methods: ['GET'])]

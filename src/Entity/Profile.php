@@ -42,6 +42,8 @@ class Profile
     #[ORM\OneToMany(targetEntity: Invitation::class, mappedBy: 'receiver', orphanRemoval: true)]
     private Collection $invitations;
 
+
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -161,4 +163,5 @@ class Profile
 
         return $this;
     }
+
 }

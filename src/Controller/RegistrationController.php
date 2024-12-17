@@ -42,8 +42,7 @@ class RegistrationController extends AbstractController
 
         // do anything else you need here, like send an email
 
-        return $this->json($user, Response::HTTP_CREATED, [], ['groups' => ['userjson']]);
-
+        return $this->json(['message' => 'User created successfully'], Response::HTTP_CREATED);
 
     }
 }

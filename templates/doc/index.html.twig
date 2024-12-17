@@ -43,7 +43,7 @@
                 <h5>Login</h5>
             </div>
             <div class="card-body">
-                <p><strong>URL:</strong> <code>POST /login</code></p>
+                <p><strong>URL:</strong> <code>POST /api/login</code></p>
                 <p><strong>Description:</strong> Authenticates a user and provides JWT tokens.</p>
                 <h6>Request Example:</h6>
                 <pre class="bg-light p-3">
@@ -62,7 +62,594 @@
             </div>
         </div>
 
-        <h1>coucou</h1>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Create a public event</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/create/event/public</code></p>
+                <p><strong>Description:</strong> Create a public event</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                    {
+                        "place": "la zone",
+                        "description": "super event",
+                        "startDate": "2024-12-17T17:00:00",
+                        "endDate": "2024-12-18T18:00:00"
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                        {
+                            "message": "Event created successfully",
+                            "event": {
+                                "id": 34,
+                                "place": "la zone",
+                                "description": "super event",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": true,
+                                "isPublic": true,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [],
+                                "invitations": [],
+                                "status": "on_schedule",
+                                "contributions": []
+                            }
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>List public events</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>GET /api/event/public</code></p>
+                <p><strong>Description:</strong> List all public events</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       [
+                            {
+                                "id": 34,
+                                "place": "la zone 1",
+                                "description": "super event",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": true,
+                                "isPublic": true,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [],
+                                "status": "on_schedule"
+                            }
+                     ]
+                </pre>
+            </div>
+        </div>
+
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Join a public event</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/event/public/join/{eventId}</code></p>
+                <p><strong>Description:</strong> Join a public event</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                        "message":"You have successfully joined the event",
+                        "event":{
+                            "id":34,
+                            "place":"la zone 1",
+                            "description":"super event",
+                            "startDate":"2024-12-17T17:00:00+00:00",
+                            "endDate":"2024-12-18T18:00:00+00:00",
+                            "isPlacePublic":true,"isPublic":true,
+                            "organizer":{"displayName":"raphael"},
+                            "participants":[{"displayName":"raphael2"}],
+                            "invitations":[],
+                            "status":"on_schedule",
+                            "contributions":[]
+                            }
+                    }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Get profiles</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/profile</code></p>
+                <p><strong>Description:</strong> Get all profiles</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       [
+                            {
+                                "displayName": "raphael",
+                                "owner": {
+                                    "id": 11
+                                },
+                                "events": [
+                                    {
+                                        "id": 34,
+                                        "place": "la zone 1"
+                                    },
+                                    {
+                                        "id": 35,
+                                        "place": "la zone 1"
+                                    }
+                                ]
+                            },
+                            {
+                                "displayName": "raphael2",
+                                "owner": {
+                                    "id": 12
+                                },
+                                "events": []
+                            }
+                        ]
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Invite a member to their private event</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/event/private/invite/{eventId}</code></p>
+                <p><strong>Description:</strong> Get all profiles</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  {
+                    "receiverId":12
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Invitation sent successfully",
+                            "event": {
+                                "id": 35,
+                                "place": "la zone 1",
+                                "description": "super event",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": false,
+                                "isPublic": false,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [],
+                                "invitations": [
+                                    {
+                                        "receiver": {
+                                            "displayName": "raphael2"
+                                        },
+                                        "status": "pending"
+                                    }
+                                ],
+                                "status": "on_schedule",
+                                "contributions": []
+                            }
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>List my invitations</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>GET /api/invitations</code></p>
+                <p><strong>Description:</strong> Get all my invitations</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       [
+                            {
+                                "id": 13,
+                                "event": {
+                                    "id": 35,
+                                    "place": "la zone 1",
+                                    "description": "super event",
+                                    "startDate": "2024-12-17T17:00:00+00:00",
+                                    "endDate": "2024-12-18T18:00:00+00:00",
+                                    "isPlacePublic": false,
+                                    "isPublic": false,
+                                    "organizer": []
+                                }
+                            }
+                    ]
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Accept an invitation</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/invitations/accept/{invitationId}</code></p>
+                <p><strong>Description:</strong> Accept an invitation</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                        "message": "Invitation accepted successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Deny an invitation</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/invitations/accept/{invitationId}</code></p>
+                <p><strong>Description:</strong> Deny an invitation</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                        "message": "Invitation denied successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>List my private events as organizer</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>GET /api/event/private/organizer</code></p>
+                <p><strong>Description:</strong> List my private events as organizer</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       [
+                            {
+                                "id": 35,
+                                "place": "la zone 1",
+                                "description": "super event",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": false,
+                                "isPublic": false,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [],
+                                "invitations": [
+                                    {
+                                        "receiver": {
+                                            "displayName": "raphael2"
+                                        },
+                                        "status": "denied"
+                                    }
+                                ],
+                                "status": "on_schedule",
+                                "contributions": []
+                            }
+                        ]
+                </pre>
+            </div>
+        </div>
+
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>List my private events as participant</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>GET /api/event/private/participant</code></p>
+                <p><strong>Description:</strong> List my private events as participant</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       [
+                            {
+                                "id": 35,
+                                "place": "la zone 1",
+                                "description": "super event",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": false,
+                                "isPublic": false,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [
+                                    {
+                                        "displayName": "raphael2"
+                                    }
+                                ],
+                                "invitations": [
+                                    {
+                                        "receiver": {
+                                            "displayName": "raphael2"
+                                        },
+                                        "status": "accepted"
+                                    }
+                                ],
+                                "status": "on_schedule",
+                                "contributions": []
+                            }
+                        ]
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Put a private event "on schedule"</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/event/on-schedule/{eventId}</code></p>
+                <p><strong>Description:</strong>Put my private event "on schedule"</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Event status on schedule successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Put a private event "canceled"</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/event/cancel/{eventId}</code></p>
+                <p><strong>Description:</strong>Put my private event "canceled"</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Event canceled successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Update a private event</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>PUT /api/event/update/{eventId}</code></p>
+                <p><strong>Description:</strong>Update my private event</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  {
+                    "place":"new place",
+                    "description": "its a new beautiful description"
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Event updated successfully",
+                            "event": {
+                                "id": 34,
+                                "place": "new place",
+                                "description": "its a new beautiful description",
+                                "startDate": "2024-12-17T17:00:00+00:00",
+                                "endDate": "2024-12-18T18:00:00+00:00",
+                                "isPlacePublic": false,
+                                "isPublic": false,
+                                "organizer": {
+                                    "displayName": "raphael"
+                                },
+                                "participants": [
+                                    {
+                                        "displayName": "raphael2"
+                                    }
+                                ],
+                                "invitations": [],
+                                "status": "on_schedule",
+                                "contributions": []
+                            }
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Add a suggestion</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/suggestion/create/{eventId}</code></p>
+                <p><strong>Description:</strong>Add a suggestion at your private event when you're the organizer</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  {
+                        "name":"bring some drinks"
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Suggestion added successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Take in charge a suggestion</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/suggestion/take/{suggestionId}</code></p>
+                <p><strong>Description:</strong>Take a suggestion if you're organizer or participant</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                       {
+                            "message": "Suggestion taken successfully"
+                        }
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Add an other charge to the event</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>POST /api/contribution/take-charge/{eventId}</code></p>
+                <p><strong>Description:</strong>Add an other charge in the contribution which is not part of the organizer's suggestions</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  {
+                            "name":"bring my fun and my positivity"
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                    {
+                        "message": "Charge added successfully"
+                    }
+
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Update a charge</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>¨PUT /api/charge/update/{chargeId}</code></p>
+                <p><strong>Description:</strong>Update a charge when you're the responsible of this charge or the organizer of the event</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  {
+                        "name":"bring chocolate"
+                    }
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                    {
+                        "message": "Charge updated successfully"
+                    }
+
+                </pre>
+            </div>
+        </div>
+
+
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Delete a charge</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>URL:</strong> <code>¨DELETE /api/charge/delete/{chargeId}</code></p>
+                <p><strong>Description:</strong>Delete a charge when you're the responsible of this charge or the organizer of the event</p>
+                <p><strong>Authorization:</strong> <code>Bearer &lt;token&gt;</code></p>
+                <h6>Request Example:</h6>
+                <pre class="bg-light p-3">
+                  No need request
+                </pre>
+                <h6>Response Example:</h6>
+                <pre class="bg-light p-3">
+                    {
+                        "message": "Charge deleted successfully"
+                    }
+
+                </pre>
+            </div>
+        </div>
+
+
+
+
+
 
 
 

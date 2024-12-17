@@ -23,28 +23,28 @@ class Event
     private ?string $place = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
     private ?\DateTimeInterface $startDate = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(["events:read", 'events:read:private', 'events:read:public'])]
+    #[Groups(["events:read", 'events:read:private', 'events:read:public', 'invitations:read'])]
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\Column]
-    #[Groups("events:read", 'events:read:public')]
+    #[Groups(["events:read", 'events:read:public', 'invitations:read'])]
     private ?bool $isPlacePublic = false;
 
     #[ORM\Column]
-    #[Groups("events:read", 'events:read:public')]
+    #[Groups(["events:read", 'events:read:public', 'invitations:read'])]
     private ?bool $isPublic = false;
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups([ "events:read", 'events:read:public'])]
+    #[Groups([ "events:read", 'events:read:public', 'invitations:read'])]
     private ?Profile $organizer = null;
 
     /**
@@ -65,12 +65,20 @@ class Event
     #[Groups(["events:read", 'events:read:public'])]
     private ?string $status = 'on_schedule';
 
+    /**
+     * @var Collection<int, Contribution>
+     */
+    #[ORM\OneToMany(targetEntity: Contribution::class, mappedBy: 'event', orphanRemoval: true)]
+    #[Groups(["events:read", 'charges:read'])]
+    private Collection $contributions;
+
 
 
     public function __construct()
     {
         $this->participants = new ArrayCollection();
         $this->invitations = new ArrayCollection();
+        $this->contributions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -224,6 +232,36 @@ class Event
     public function setStatus(?string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contribution>
+     */
+    public function getContributions(): Collection
+    {
+        return $this->contributions;
+    }
+
+    public function addContribution(Contribution $contribution): static
+    {
+        if (!$this->contributions->contains($contribution)) {
+            $this->contributions->add($contribution);
+            $contribution->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContribution(Contribution $contribution): static
+    {
+        if ($this->contributions->removeElement($contribution)) {
+            // set the owning side to null (unless already changed)
+            if ($contribution->getEvent() === $this) {
+                $contribution->setEvent(null);
+            }
+        }
 
         return $this;
     }
